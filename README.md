@@ -10,3 +10,5 @@ The NLW Space Time
 ### Projects
 
 - [Server](./server/)
+- [Mobiel](./mobile/)
+- [Web](./web/)
