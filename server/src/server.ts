@@ -22,7 +22,8 @@ const PORT = process.env.PORT || 3333
 
 app
   .listen({
-    port: Number(PORT)
+    port: Number(PORT),
+    host: '0.0.0.0'
   })
   .then(host => {
     console.log(`‣ 🚀 ${host.replace('[::1]', 'localhost')}`)
