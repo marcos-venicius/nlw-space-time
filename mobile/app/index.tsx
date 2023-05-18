@@ -13,14 +13,14 @@ import Logo from "../src/assets/logo.svg";
 import Stripes from "../src/assets/stripes.svg";
 import { api } from "../src/lib/api";
 import { useRouter } from "expo-router";
+import { githubKeys } from "../src/lib/github-keys";
 
 const StyledStripes = styled(Stripes);
 
 const discovery = {
   authorizationEndpoint: "https://github.com/login/oauth/authorize",
   tokenEndpoint: "https://github.com/login/oauth/access_token",
-  revocationEndpoint:
-    "https://github.com/settings/connections/applications/077920a0f526df5cf6a2",
+  revocationEndpoint: `https://github.com/settings/connections/applications/${githubKeys.clientId}`,
 };
 
 export default function App() {
@@ -34,7 +34,7 @@ export default function App() {
 
   const [, response, signInWithGithub] = useAuthRequest(
     {
-      clientId: "077920a0f526df5cf6a2",
+      clientId: githubKeys.clientId,
       scopes: ["identity"],
       redirectUri: makeRedirectUri({
         scheme: "marcos.dev.nlwspacetime",
