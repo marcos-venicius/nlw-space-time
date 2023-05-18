@@ -3,8 +3,8 @@ import jwt from '@fastify/jwt'
 
 import fastify from 'fastify'
 import cors from '@fastify/cors'
-import { memoriesRoutes } from './routes/memories'
-import { authRoutes } from './routes/auth'
+import { memoriesRoutesV1 } from './routes/v1/memories'
+import { authRoutesV1 } from './routes/v1/auth'
 
 const app = fastify()
 
@@ -15,8 +15,8 @@ app.register(jwt, {
   secret: String(process.env.JWT_SECRET)
 })
 
-app.register(memoriesRoutes, { prefix: '/api/v1' })
-app.register(authRoutes, { prefix: '/api/v1' })
+app.register(memoriesRoutesV1, { prefix: '/api/v1' })
+app.register(authRoutesV1, { prefix: '/api/v1' })
 
 const PORT = process.env.PORT || 3333
 
