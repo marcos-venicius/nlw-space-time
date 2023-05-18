@@ -15,8 +15,8 @@ app.register(jwt, {
   secret: String(process.env.JWT_SECRET)
 })
 
-app.register(memoriesRoutes)
-app.register(authRoutes)
+app.register(memoriesRoutes, { prefix: '/api/v1' })
+app.register(authRoutes, { prefix: '/api/v1' })
 
 const PORT = process.env.PORT || 3333
 
