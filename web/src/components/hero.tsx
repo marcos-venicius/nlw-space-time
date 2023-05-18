@@ -1,7 +1,10 @@
+import { cookies } from "next/headers";
 import logo from "../assets/logo.svg";
 import Image from "next/image";
 
 export function Hero() {
+  const isAuthenticated = cookies().get("auth-token");
+
   return (
     <div className="space-y-5">
       <Image src={logo} alt="NLW spacetime logo" />
@@ -18,10 +21,14 @@ export function Hero() {
       </div>
 
       <a
-        href="#"
+        href={
+          isAuthenticated
+            ? "#"
+            : `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`
+        }
         className="inline-block rounded-full bg-green-500 px-5 py-3 font-alt text-sm uppercase leading-none text-black hover:bg-green-600 transition-colors"
       >
-        CADASTRAR LEMBRANÇA
+        {isAuthenticated ? "CADASTRAR LEMBRANÇA" : "ENTRAR COM GITHUB"}
       </a>
     </div>
   );
