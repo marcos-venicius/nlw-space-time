@@ -14,8 +14,11 @@ export async function GET(request: NextRequest) {
   const { token } = registerResponse.data;
 
   const redirectURL = new URL("/", request.url);
+  const redirectCookie = request.cookies.get("redirect-to")?.value;
 
-  return NextResponse.redirect(redirectURL, {
+  const redirectLocation = redirectCookie || redirectURL;
+
+  return NextResponse.redirect(redirectLocation, {
     headers: {
       "Set-Cookie": `auth-token=${token}; Path=/; max-age=${daysInSeconds(30)}`,
     },
