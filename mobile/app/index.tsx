@@ -1,25 +1,67 @@
+import React from "react";
+import * as SecureStore from "expo-secure-store";
 import { StatusBar } from "expo-status-bar";
 import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
-
-import { styled } from "nativewind";
 import { useFonts } from "expo-font";
-
+import { styled } from "nativewind";
 import { Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
-
 import { BaiJamjuree_700Bold } from "@expo-google-fonts/bai-jamjuree";
+import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 
-import bgBlur from "./src/assets/bg-blur.png";
-import Stripes from "./src/assets/stripes.svg";
-import Logo from "./src/assets/logo.svg";
+import bgBlur from "../src/assets/bg-blur.png";
+import Logo from "../src/assets/logo.svg";
+import Stripes from "../src/assets/stripes.svg";
+import { api } from "../src/lib/api";
+import { useRouter } from "expo-router";
 
 const StyledStripes = styled(Stripes);
 
+const discovery = {
+  authorizationEndpoint: "https://github.com/login/oauth/authorize",
+  tokenEndpoint: "https://github.com/login/oauth/access_token",
+  revocationEndpoint:
+    "https://github.com/settings/connections/applications/077920a0f526df5cf6a2",
+};
+
 export default function App() {
+  const router = useRouter();
+
   const [hasLoaded] = useFonts({
     Roboto_400Regular,
     Roboto_700Bold,
     BaiJamjuree_700Bold,
   });
+
+  const [, response, signInWithGithub] = useAuthRequest(
+    {
+      clientId: "077920a0f526df5cf6a2",
+      scopes: ["identity"],
+      redirectUri: makeRedirectUri({
+        scheme: "marcos.dev.nlwspacetime",
+      }),
+    },
+    discovery
+  );
+
+  async function handleGithubOAuthCode(code: string) {
+    const response = await api.post("/v1/register", {
+      code,
+    });
+
+    const { token } = response.data;
+
+    await SecureStore.setItemAsync("auth-token", token);
+
+    router.push("/memories");
+  }
+
+  React.useEffect(() => {
+    if (response?.type === "success") {
+      const { code } = response.params;
+
+      handleGithubOAuthCode(code);
+    }
+  }, [response]);
 
   if (!hasLoaded) {
     return null;
@@ -51,6 +93,7 @@ export default function App() {
         </View>
 
         <TouchableOpacity
+          onPress={() => signInWithGithub()}
           className="rounded-full bg-green-500 px-5 py-3"
           activeOpacity={0.7}
         >
