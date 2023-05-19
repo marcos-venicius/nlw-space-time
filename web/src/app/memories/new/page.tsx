@@ -1,9 +1,10 @@
+import { MediaPicker } from "@/components/media-picker";
 import { Camera, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 export default function Page() {
   return (
-    <section className="flex  flex-1 flex-col gap-4">
+    <section className="flex min-h-full flex-col gap-4 overflow-auto">
       <Link
         href="/"
         className="flex items-center text-sm gap-1 text-gray-200 hover:text-gray-100"
@@ -12,7 +13,7 @@ export default function Page() {
         voltar a timeline
       </Link>
 
-      <form className="form flex-1 flex-col gap-2">
+      <form className="h-full flex-col gap-5 flex">
         <div className="flex items-center gap-4">
           <label
             htmlFor="attach-media"
@@ -36,15 +37,15 @@ export default function Page() {
           </label>
         </div>
 
+        <MediaPicker id="attach-media" accept="image/*" />
+
         <textarea
           name="content"
           spellCheck={false}
-          className="focus:ring-0 w-full max-w-[1000px] h-full flex-1 resize-none rounded border-0 bg-transparent p-1 text-lg leading-relaxed text-gray-100 placeholder:text-gray-400 mt-2"
+          className="focus:ring-0 h-80 w-full max-w-[1000px] flex-1 resize-none rounded border-0 bg-transparent p-1 text-lg leading-relaxed text-gray-100 placeholder:text-gray-400 mt-2"
           placeholder="Fique livre para adicionar fotos, e relatos sobre essa experiência que você quer lembrar para sempre."
         />
       </form>
-
-      <input hidden type="file" id="attach-media" accept="image/*" />
     </section>
   );
 }
