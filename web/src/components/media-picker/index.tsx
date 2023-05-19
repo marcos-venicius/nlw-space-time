@@ -25,6 +25,7 @@ export function MediaPicker({ accept, id = "attach-media" }: Props) {
       <input
         hidden
         type="file"
+        name={id}
         id={id}
         accept={accept}
         onChange={onMediaSelected}

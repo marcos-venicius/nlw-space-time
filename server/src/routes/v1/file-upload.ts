@@ -10,7 +10,11 @@ const maxFileSize = 5 * 1024 * 1024
 const pump = promisify(pipeline)
 
 export async function fileUploadRoutes(app: FastifyInstance) {
-  // migrate to cloud flare r2
+  app.addHook('preHandler', async request => {
+    await request.jwtVerify()
+  })
+
+  // TODO: migrate to cloud flare r2
   app.post('/image-upload', async (request, response) => {
     const file = await request.file({
       limits: {
