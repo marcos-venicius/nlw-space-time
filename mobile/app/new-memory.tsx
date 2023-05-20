@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import Logo from "../src/assets/logo.svg";
 import * as ImagePicker from "expo-image-picker";
 import { Feather } from "@expo/vector-icons";
@@ -14,8 +14,11 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import React from "react";
+import { uploadImageRequest } from "../src/requests/media/upload-image-request";
+import { createMemoryRequest } from "../src/requests/memories/create-memory-request";
 
 export default function NewMemory() {
+  const router = useRouter();
   const { bottom, top } = useSafeAreaInsets();
 
   // TODO: migrate to react hook form
@@ -24,11 +27,21 @@ export default function NewMemory() {
   const [isPublic, setIsPublic] = React.useState(false);
   const [content, setContent] = React.useState("");
 
+  // TODO: handle errors
   async function handlOnSubmit() {
-    console.log({
+    let coverUrl = "";
+
+    if (coverImage) {
+      coverUrl = await uploadImageRequest(coverImage);
+    }
+
+    await createMemoryRequest({
+      content: content || "(empty)",
+      coverUrl,
       isPublic,
-      content,
     });
+
+    router.push("/memories");
   }
 
   async function openImagePicker() {
@@ -110,7 +123,7 @@ export default function NewMemory() {
               </View>
             </ImageBackground>
           ) : (
-            <View className="flex-row items-center gap-2">
+            <View className="flex-1 flex-row justify-center items-center gap-2">
               <Feather name="image" color="#ffffff" size={16} />
 
               <Text className="font-body text-sm text-gray-200">
@@ -124,6 +137,7 @@ export default function NewMemory() {
           value={content}
           onChangeText={setContent}
           multiline
+          textAlignVertical="top"
           autoCorrect={false}
           autoCapitalize="none"
           autoComplete="off"
