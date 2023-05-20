@@ -5,7 +5,7 @@ import { createWriteStream } from 'node:fs'
 import { pipeline } from 'node:stream'
 import { promisify } from 'node:util'
 
-const maxFileSize = 5 * 1024 * 1024
+const maxFileSize = 10 * 1024 * 1024
 
 const pump = promisify(pipeline)
 
@@ -19,7 +19,7 @@ export async function fileUploadRoutes(app: FastifyInstance) {
     try {
       const file = await request.file({
         limits: {
-          fileSize: 5 * 1024 * 1024 // 5mb
+          fileSize: maxFileSize
         }
       })
 
