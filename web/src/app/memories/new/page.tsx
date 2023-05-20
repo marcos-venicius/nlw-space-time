@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <section className="flex min-h-full flex-col gap-4 overflow-auto">
+    <section className="flex min-h-full flex-col gap-4 overflow-auto p-16">
       <Link
         href="/"
         className="flex items-center text-sm gap-1 text-gray-200 hover:text-gray-100"
