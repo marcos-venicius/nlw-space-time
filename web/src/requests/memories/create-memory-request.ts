@@ -12,9 +12,11 @@ export async function createMemoryRequest(data: CreateMemoryRequest) {
 
   // TODO: handle errors
 
-  await api.post(`/v1/memories`, data, {
+  const response = await api.post<string>(`/v1/memories`, data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  return response.data;
 }

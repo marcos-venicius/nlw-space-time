@@ -43,7 +43,13 @@ export async function memoriesRoutesV1(app: FastifyInstance) {
       return response.status(403).send()
     }
 
-    return memory
+    return {
+      id: memory.id,
+      coverUrl: memory.coverUrl,
+      content: memory.content,
+      createdAt: memory.createdAt,
+      isPublic: memory.isPublic
+    }
   })
 
   app.post('/memories', async request => {

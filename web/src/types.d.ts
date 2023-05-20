@@ -7,5 +7,13 @@ namespace app {
       createdAt: string;
       isPublic: boolean;
     }
+
+    interface UniqueMemory {
+      id: string;
+      coverUrl: string;
+      content: string;
+      isPublic: boolean;
+      createdAt: string;
+    }
   }
 }

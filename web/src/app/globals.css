@@ -6,3 +6,20 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #121215 #2c2c31;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: #121215;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 8px;
+  height: 8px;
+  background: #2c2c31;
+}

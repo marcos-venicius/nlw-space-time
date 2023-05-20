@@ -5,10 +5,17 @@ import React from "react";
 type Props = {
   id?: string;
   accept?: string;
+  initialMedia?: string;
 };
 
-export function MediaPicker({ accept, id = "attach-media" }: Props) {
-  const [mediaPreview, setMediaPreview] = React.useState<string | null>(null);
+export function MediaPicker({
+  accept,
+  id = "attach-media",
+  initialMedia,
+}: Props) {
+  const [mediaPreview, setMediaPreview] = React.useState<string | null>(
+    initialMedia || null
+  );
 
   function onMediaSelected(event: React.ChangeEvent<HTMLInputElement>) {
     const { files } = event.target;

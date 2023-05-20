@@ -66,7 +66,7 @@ export default async function Home() {
           </p>
 
           <Link
-            href={`/memories/${memory.id}`}
+            href={`/memories/${memory.id}/view`}
             className="flex items-center gap-2 text-sm text-gray-200 hover:text-gray-100 transition-colors"
           >
             Ler mais <ArrowRight className="w-4 h-4" />

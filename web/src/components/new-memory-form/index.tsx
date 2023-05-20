@@ -27,13 +27,13 @@ export function NewMemoryForm() {
       coverUrl = await uploadImageRequest(fileToUpload as File);
     }
 
-    await createMemoryRequest({
+    const createdId = await createMemoryRequest({
       content: formData.get("content") as string,
       coverUrl,
       isPublic: formData.has("is-public"),
     });
 
-    router.push("/");
+    router.push(`/memories/${createdId}/view`);
   }
 
   return (
