@@ -1,7 +1,9 @@
 import { Link } from "expo-router";
 import Logo from "../src/assets/logo.svg";
+import * as ImagePicker from "expo-image-picker";
 import { Feather } from "@expo/vector-icons";
 import {
+  ImageBackground,
   Pressable,
   ScrollView,
   Switch,
@@ -15,7 +17,33 @@ import React from "react";
 
 export default function NewMemory() {
   const { bottom, top } = useSafeAreaInsets();
+
+  // TODO: migrate to react hook form
+  const [coverImage, setCoverImage] =
+    React.useState<ImagePicker.ImagePickerAsset | null>(null);
   const [isPublic, setIsPublic] = React.useState(false);
+  const [content, setContent] = React.useState("");
+
+  async function handlOnSubmit() {
+    console.log({
+      isPublic,
+      content,
+    });
+  }
+
+  async function openImagePicker() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsMultipleSelection: false,
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setCoverImage(result.assets[0]);
+    }
+  }
 
   return (
     <ScrollView
@@ -60,22 +88,41 @@ export default function NewMemory() {
         </View>
 
         <Pressable
-          className="h-32 items-center justify-center rounded-lg border border-dashed border-gray-500 bg-black/20"
+          onPress={openImagePicker}
+          className="overflow-hidden w-full rounded-lg border border-dashed border-gray-500 bg-black/20 aspect-video"
           android_ripple={{
             color: "#372560",
             borderless: true,
           }}
         >
-          <View className="flex-row items-center gap-2">
-            <Feather name="image" color="#ffffff" size={16} />
+          {coverImage ? (
+            <ImageBackground
+              source={coverImage}
+              resizeMode="cover"
+              className="flex-1"
+            >
+              <View className="fflex flex-row gap-2 flex-1 bg-black/20 justify-center items-center">
+                <Feather name="image" color="#ffffff" size={16} />
 
-            <Text className="font-body text-sm text-gray-200">
-              Adicionar foto de capa
-            </Text>
-          </View>
+                <Text className="font-body text-sm text-white">
+                  Alterar imagem de capa
+                </Text>
+              </View>
+            </ImageBackground>
+          ) : (
+            <View className="flex-row items-center gap-2">
+              <Feather name="image" color="#ffffff" size={16} />
+
+              <Text className="font-body text-sm text-gray-200">
+                Adicionar imagem de capa
+              </Text>
+            </View>
+          )}
         </Pressable>
 
         <TextInput
+          value={content}
+          onChangeText={setContent}
           multiline
           autoCorrect={false}
           autoCapitalize="none"
@@ -90,6 +137,7 @@ export default function NewMemory() {
         <TouchableOpacity
           className="rounded-full bg-green-500 px-5 py-3 items-center self-end"
           activeOpacity={0.7}
+          onPress={handlOnSubmit}
         >
           <Text className="font-alt text-sm uppercase text-black leading-none">
             salvar

@@ -12,6 +12,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you add a cover to your memories"
+        }
+      ]
+    ],
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
